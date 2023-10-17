@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_pinoyrecipe"
+    app:startDestination="@id/startFragment">
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.example.pinoy_recipe.Fragments.StartFragment"
+        android:label="fragment_start"
+        tools:layout="@layout/fragment_start" >
+        <action
+            android:id="@+id/action_startFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.example.pinoy_recipe.Fragments.MenuFragment"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/action_menuFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_foodPlace"
+            app:destination="@id/foodPlace" />
+    </fragment>
+    <fragment
+        android:id="@+id/reciperAndHowTo"
+        android:name="com.example.pinoy_recipe.Fragments.ReciperAndHowTo"
+        android:label="fragment_reciper_and_how_to"
+        tools:layout="@layout/fragment_reciper_and_how_to" >
+        <action
+            android:id="@+id/action_reciperAndHowTo_to_foodPlace"
+            app:destination="@id/foodPlace" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.pinoy_recipe.Fragments.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/foodPlace"
+        android:name="com.example.pinoy_recipe.Fragments.FoodPlace"
+        android:label="fragment_food_place"
+        tools:layout="@layout/fragment_food_place" >
+        <action
+            android:id="@+id/action_foodPlace_to_menuFragment"
+            app:destination="@id/menuFragment" />
+        <action
+            android:id="@+id/action_foodPlace_to_reciperAndHowTo"
+            app:destination="@id/reciperAndHowTo" />
+    </fragment>
+</navigation>

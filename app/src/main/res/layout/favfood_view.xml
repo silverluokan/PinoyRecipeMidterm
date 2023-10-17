@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="230dp"
+    android:layout_height="472dp">
+
+    <TextView
+        android:id="@+id/FavFoodN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="FOOD NAME"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:fontFamily="@font/robotoregular"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/FavFoodP"
+        android:layout_width="210dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FavFoodN"
+        app:srcCompat="@drawable/sisig" />
+
+    <TextView
+        android:id="@+id/FavFoodAdded"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="TIME ADDED"
+        android:textStyle="bold"
+        android:textSize="14dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:fontFamily="@font/robotoregular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FavFoodP"
+        app:layout_constraintVertical_bias="0.271" />
+</androidx.constraintlayout.widget.ConstraintLayout>
