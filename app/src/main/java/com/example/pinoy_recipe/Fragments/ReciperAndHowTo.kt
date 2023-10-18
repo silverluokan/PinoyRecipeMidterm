@@ -155,7 +155,7 @@ class ReciperAndHowTo : Fragment(), View.OnClickListener {
                 binding.IngredText.text = "Ingredient "+MinIndexRecipe+": \n"+DishesRecipe.getSinigang(MinIndexRecipe)
                 binding.HowToText.text = "Step "+MinIndexHowto+": "+DishesRecipe.getHowToSinigang(MinIndexHowto)
             }
-            ("Kare-Kare")->{
+            ("Kare - Kare")->{
                 CheckIndexes(DishesRecipe.KareKare.size,DishesRecipe.KareKareCook.size)
                 binding.IngredText.text = "Ingredient "+MinIndexRecipe+": \n"+DishesRecipe.getKareKare(MinIndexRecipe)
                 binding.HowToText.text = "Step "+MinIndexHowto+": \n"+DishesRecipe.getHowToKareKare(MinIndexHowto)

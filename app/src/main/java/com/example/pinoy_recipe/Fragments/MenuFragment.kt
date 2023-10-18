@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.pinoy_recipe.Constants.FoodCategory
 import com.example.pinoy_recipe.Constants.PICK_FOOD
 import com.example.pinoy_recipe.R
+import com.example.pinoy_recipe.RealmDb.DataBase
 import com.example.pinoy_recipe.databinding.FragmentMenuBinding
 
 class MenuFragment : Fragment(), View.OnClickListener {
@@ -54,7 +56,13 @@ class MenuFragment : Fragment(), View.OnClickListener {
                 findNavController().navigate(R.id.action_menuFragment_to_foodPlace)
             }
             (R.id.FavoriteBtn)->{
-                findNavController().navigate(R.id.action_menuFragment_to_favoritesFragment)
+                val queryFavorites = DataBase.queryFav()
+
+                if (queryFavorites.isEmpty()) {
+                    Toast.makeText(requireContext(), "There is no favorites!", Toast.LENGTH_SHORT).show()
+                } else {
+                    findNavController().navigate(R.id.action_menuFragment_to_favoritesFragment)
+                }
             }
         }
     }

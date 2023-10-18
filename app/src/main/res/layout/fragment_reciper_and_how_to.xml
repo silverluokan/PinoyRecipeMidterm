@@ -10,13 +10,11 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:fontFamily="@font/justanotherhand"
         android:text="Recipe"
         android:textColor="#F257B4"
         android:textSize="80dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,128 +41,149 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/FoodPic"
-                android:layout_width="150dp"
-                android:layout_height="250dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/dinuguan"
-                app:layout_constraintEnd_toEndOf="@+id/FoodNames"
-                app:layout_constraintHorizontal_bias="0.491"
-                app:layout_constraintStart_toStartOf="@+id/FoodNames"
-                app:layout_constraintTop_toBottomOf="@+id/FoodNames" />
-
-            <Button
-                android:id="@+id/PrevIngred"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintRecipeName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:text="Prev"
-                app:layout_constraintBottom_toBottomOf="@+id/IngredText"
-                app:layout_constraintEnd_toStartOf="@+id/IngredText"
-                app:layout_constraintTop_toTopOf="@+id/IngredText" />
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/textView4"
+                tools:ignore="NotSibling"
+                android:layout_marginHorizontal="16dp">
 
-            <Button
-                android:id="@+id/NextIngred"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/FoodNames"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/robotoregular"
+                    android:text="Dinuguan"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/FoodPic"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/FoodPic"
+                    android:layout_width="150dp"
+                    android:layout_height="250dp"
+                    android:src="@drawable/dinuguan"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/FavBtn"
+                    android:layout_width="55dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="12dp"
+                    android:backgroundTint="@color/white"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/start_unfavorite"
+                    android:tag="favorite"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView10"
+                    app:layout_constraintStart_toEndOf="@+id/FoodPic"
+                    app:layout_constraintTop_toTopOf="@+id/textView10" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/robotoregular"
+                    android:text="Add to Favorites"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/FavBtn"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintRecipeIngredients"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="Next"
-                app:layout_constraintBottom_toBottomOf="@+id/IngredText"
-                app:layout_constraintStart_toEndOf="@+id/IngredText"
-                app:layout_constraintTop_toTopOf="@+id/IngredText" />
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/constraintRecipeName">
 
-            <TextView
-                android:id="@+id/IngredText"
-                android:layout_width="200dp"
+                <Button
+                    android:id="@+id/PrevIngred"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Prev"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/IngredText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/NextIngred"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Next"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/IngredText"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/IngredText"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/robotoregular"
+                    android:text="Recipe"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintRecipeSteps"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:fontFamily="@font/robotoregular"
-                android:text="Recipe"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/FoodPic"
-                app:layout_constraintStart_toStartOf="@+id/FoodPic"
-                app:layout_constraintTop_toBottomOf="@+id/FoodPic" />
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/constraintRecipeIngredients"
+                android:layout_marginTop="32dp">
 
-            <Button
-                android:id="@+id/PrevStep"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:text="Prev"
-                app:layout_constraintBottom_toBottomOf="@+id/HowToText"
-                app:layout_constraintEnd_toStartOf="@+id/HowToText"
-                app:layout_constraintTop_toTopOf="@+id/HowToText" />
+                <Button
+                    android:id="@+id/PrevStep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Prev"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/HowToText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/NextStep"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="Next"
-                app:layout_constraintBottom_toBottomOf="@+id/HowToText"
-                app:layout_constraintStart_toEndOf="@+id/HowToText"
-                app:layout_constraintTop_toTopOf="@+id/HowToText" />
+                <Button
+                    android:id="@+id/NextStep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Next"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/HowToText"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/HowToText"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="84dp"
-                android:fontFamily="@font/robotoregular"
-                android:text="Instruction of how to Cook"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/IngredText"
-                app:layout_constraintHorizontal_bias="0.42"
-                app:layout_constraintStart_toStartOf="@+id/IngredText"
-                app:layout_constraintTop_toBottomOf="@+id/IngredText" />
-
-            <TextView
-                android:id="@+id/FoodNames"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/robotoregular"
-                android:text="Dinuguan"
-                android:textColor="@color/black"
-                android:textSize="30dp"
-                android:textStyle="bold"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/FavBtn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="35dp"
-                android:layout_marginTop="30dp"
-                android:backgroundTint="@color/white"
-                android:scaleType="fitXY"
-                android:src="@drawable/start_unfavorite"
-                android:tag="favorite"
-                app:layout_constraintStart_toStartOf="@+id/PrevStep"
-                app:layout_constraintTop_toBottomOf="@+id/HowToText" />
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/robotoregular"
-                android:text="Add To My Favorite"
-                android:textColor="@color/black"
-                android:textSize="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/FavBtn"
-                app:layout_constraintStart_toEndOf="@+id/FavBtn"
-                app:layout_constraintTop_toTopOf="@+id/FavBtn" />
-
-
+                <TextView
+                    android:id="@+id/HowToText"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/robotoregular"
+                    android:text="Instruction of how to Cook"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

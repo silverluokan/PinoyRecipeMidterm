@@ -2,7 +2,6 @@ package com.example.pinoy_recipe.Fragments
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,26 +37,28 @@ class FavoritesFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         val indexMax = binding.recyclerView.adapter?.itemCount
         when(v!!.id){
-            (R.id.PrevButton)->{
+            (R.id.PrevButton) -> {
                 index--
-                Log.e("indexMax: ", indexMax.toString())
                 if (indexMax != null) {
-                    if(index<0)
-                        binding.recyclerView.scrollToPosition(indexMax)
-                    else
+                    if(index < 0) {
+                        index = indexMax
                         binding.recyclerView.scrollToPosition(index)
+                    }
+                    else {
+                        binding.recyclerView.scrollToPosition(index)
+                    }
                 }
-
             }
-            (R.id.NextButton)->{
+            (R.id.NextButton) -> {
                 index++
                 if (indexMax != null) {
-                    if(index > indexMax)
-                        binding.recyclerView.scrollToPosition(0)
-                    else
+                    if (index > indexMax) {
+                        index = 0
                         binding.recyclerView.scrollToPosition(index)
+                    } else {
+                        binding.recyclerView.scrollToPosition(index)
+                    }
                 }
-
             }
             (R.id.FPmenuBackBtn2)->{
                 findNavController().navigate(R.id.action_favoritesFragment_to_menuFragment)
