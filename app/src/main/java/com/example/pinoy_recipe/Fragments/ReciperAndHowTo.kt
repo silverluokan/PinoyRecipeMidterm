@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,16 +24,16 @@ import com.example.pinoy_recipe.Lists.DishesList
 import com.example.pinoy_recipe.Lists.DrinkList
 import com.example.pinoy_recipe.Lists.SnackList
 import com.example.pinoy_recipe.R
-import com.example.pinoy_recipe.RealmDb.OperationDB
-import com.example.pinoy_recipe.RealmDb.RealmConfig
+import com.example.pinoy_recipe.RealmDb.DataBase
 import com.example.pinoy_recipe.databinding.FragmentReciperAndHowToBinding
-import io.realm.kotlin.RealmConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import kotlin.coroutines.CoroutineContext
 
 
@@ -40,8 +41,6 @@ class ReciperAndHowTo : Fragment(), View.OnClickListener {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var sharedPreferencesFav: SharedPreferences
     private lateinit var binding: FragmentReciperAndHowToBinding
-    private lateinit var config: RealmConfiguration
-    private lateinit var operation: OperationDB
     private lateinit var coroutine: CoroutineContext
 
     var MinIndexRecipe = 1
@@ -60,14 +59,24 @@ class ReciperAndHowTo : Fragment(), View.OnClickListener {
         binding.imageButton.setOnClickListener(this)
         sharedPreferences = this.requireActivity().getSharedPreferences(PICK_FOOD, Context.MODE_PRIVATE)
         binding.FoodNames.text = sharedPreferences.getString(FoodName, "")
-
-
-        config = RealmConfig.getConfiguration()
-        operation = OperationDB(config)
         coroutine = Job() + Dispatchers.IO
-
+        checkFavorite()
         PictureSettler()
         return binding.root
+    }
+
+    fun checkFavorite(){
+        val scope = CoroutineScope(coroutine)
+        scope.launch(Dispatchers.IO){
+            withContext(Dispatchers.Main){
+                val FavOrNot = DataBase.query(binding.FoodNames.text.toString())
+                if(FavOrNot == true) {
+                    binding.FavBtn.setImageResource(R.drawable.start_favorite)
+                    binding.FavBtn.tag = "unfavorite"
+                }
+            }
+        }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -90,19 +99,32 @@ class ReciperAndHowTo : Fragment(), View.OnClickListener {
                 OperationDish()
             }
             (R.id.FavBtn)->{
-                val current = LocalDateTime.now()
+                val currentTime = LocalTime.now()
+                val currentDate = LocalTime.now()
+                val formatTime = currentTime.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
+                val formatDate = currentDate.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
+
+                val TimeAndDate = "Added To Favorite at:\n Date: $formatDate Time: $formatTime"
+                Log.e("TIME AND DATE: ", TimeAndDate)
                 if(binding.FavBtn.tag.equals("favorite")) {
                     binding.FavBtn.setImageResource(R.drawable.start_favorite)
-                    binding.FavBtn.tag = "favorited"
-                    addFood(
-                        binding.FoodNames.text.toString(),
-                        current.toString()
-                    )
+                    binding.FavBtn.tag = "unfavorite"
+                    val scope = CoroutineScope(coroutine)
+                    scope.launch(Dispatchers.IO){
+                        withContext(Dispatchers.Main){
+                            DataBase.write(binding.FoodNames.text.toString(),TimeAndDate.toString())
+                        }
+                    }
                 }
                 else{
                     binding.FavBtn.setImageResource(R.drawable.start_unfavorite)
-                    binding.FavBtn.tag = "favorited"
-                    removeFood(binding.FoodNames.text.toString())
+                    binding.FavBtn.tag = "favorite"
+                    val scope = CoroutineScope(coroutine)
+                    scope.launch(Dispatchers.IO){
+                        withContext(Dispatchers.Main) {
+                            DataBase.delete(binding.FoodNames.text.toString())
+                        }
+                    }
                 }
             }
             (R.id.imageButton)->{
@@ -115,7 +137,7 @@ class ReciperAndHowTo : Fragment(), View.OnClickListener {
     fun OperationDish() {
         when(sharedPreferences.getString(FoodCategory, "").toString()){
             "Dishes"->{ Dishes() }
-            "Dessert"->{ Dessert() }
+            "Desserts"->{ Dessert() }
             "Snacks"->{ Snacks() }
             "Drinks"->{ Drinks() }
         }
@@ -271,7 +293,7 @@ class ReciperAndHowTo : Fragment(), View.OnClickListener {
                     }
                 }
             }
-            "Dessert"->{
+            "Desserts"->{
                 for(i in 0..4){
                     if(DessertList.dessertList[i].DessertName == binding.FoodNames.text){
                         binding.FoodPic.setImageResource(DessertList.dessertList[i].img)
@@ -292,21 +314,6 @@ class ReciperAndHowTo : Fragment(), View.OnClickListener {
                     }
                 }
             }
-        }
-    }
-
-    fun addFood(FoodN: String, FoodAdded: String) {
-        val scope = CoroutineScope(coroutine)
-        scope.launch(Dispatchers.IO){
-            operation.InsertFood(FoodN,FoodAdded)
-            withContext(Dispatchers.Main){
-            }
-        }
-    }
-    fun removeFood(FoodNR: String) {
-        val scope = CoroutineScope(coroutine)
-        scope.launch(Dispatchers.IO){
-            operation.removeFood(FoodNR)
         }
     }
 }

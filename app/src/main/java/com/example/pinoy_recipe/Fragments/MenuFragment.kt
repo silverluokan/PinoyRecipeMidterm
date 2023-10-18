@@ -3,16 +3,15 @@ package com.example.pinoy_recipe.Fragments
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.pinoy_recipe.Constants.FoodCategory
 import com.example.pinoy_recipe.Constants.PICK_FOOD
 import com.example.pinoy_recipe.R
 import com.example.pinoy_recipe.databinding.FragmentMenuBinding
-import com.example.pinoy_recipe.databinding.FragmentStartBinding
 
 class MenuFragment : Fragment(), View.OnClickListener {
 
@@ -28,6 +27,7 @@ class MenuFragment : Fragment(), View.OnClickListener {
         binding.MenuDishesBtn.setOnClickListener(this)
         binding.MenuDrinksBtn.setOnClickListener(this)
         binding.MenuSnacksBtn.setOnClickListener(this)
+        binding.FavoriteBtn.setOnClickListener(this)
         return binding.root
     }
 
@@ -52,6 +52,9 @@ class MenuFragment : Fragment(), View.OnClickListener {
             (R.id.MenuSnacksBtn)->{
                 sharedPreferences.edit().putString(FoodCategory,"Snacks").apply()
                 findNavController().navigate(R.id.action_menuFragment_to_foodPlace)
+            }
+            (R.id.FavoriteBtn)->{
+                findNavController().navigate(R.id.action_menuFragment_to_favoritesFragment)
             }
         }
     }

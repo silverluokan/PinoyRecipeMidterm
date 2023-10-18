@@ -3,16 +3,16 @@ package com.example.pinoy_recipe.Activities
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.pinoy_recipe.Constants.EMAIL
-import com.example.pinoy_recipe.Constants.NAME
 import com.example.pinoy_recipe.Constants.PASSWORD
 import com.example.pinoy_recipe.MainActivity
 import com.example.pinoy_recipe.R
 import com.example.pinoy_recipe.databinding.ActivityFrontBinding
+
 
 class FrontActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var sharedPreferences: SharedPreferences
