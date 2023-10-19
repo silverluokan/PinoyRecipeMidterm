@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pinoy_recipe.Constants.ACC_INFO
 import com.example.pinoy_recipe.Constants.USERNAME
@@ -49,6 +50,8 @@ class FrontActivity : AppCompatActivity(), View.OnClickListener {
                     Log.e("Name:", NameOfUser)
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
+                } else {
+                    Toast.makeText(this, "Incorrect username or password!", Toast.LENGTH_SHORT).show()
                 }
             }
             (R.id.SignUpBtn)->{
