@@ -12,9 +12,11 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.pinoy_recipe.Constants.ACC_INFO
 import com.example.pinoy_recipe.Constants.FoodCategory
 import com.example.pinoy_recipe.Constants.FoodName
 import com.example.pinoy_recipe.Constants.PICK_FOOD
+import com.example.pinoy_recipe.Constants.USERNAME
 import com.example.pinoy_recipe.FilipinoCuisine.DessertRecipe
 import com.example.pinoy_recipe.FilipinoCuisine.DishesRecipe
 import com.example.pinoy_recipe.FilipinoCuisine.DrinksRecipe
@@ -39,13 +41,14 @@ import kotlin.coroutines.CoroutineContext
 
 class ReciperAndHowTo : Fragment(), View.OnClickListener {
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var sharedPreferencesFav: SharedPreferences
+    private lateinit var sharedPreferencesPerson: SharedPreferences
     private lateinit var binding: FragmentReciperAndHowToBinding
     private lateinit var coroutine: CoroutineContext
 
     var MinIndexRecipe = 1
     var MinIndexHowto = 1
     var OneTime = 1;
+    var UserName = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,6 +61,8 @@ class ReciperAndHowTo : Fragment(), View.OnClickListener {
         binding.FavBtn.setOnClickListener(this)
         binding.imageButton.setOnClickListener(this)
         sharedPreferences = this.requireActivity().getSharedPreferences(PICK_FOOD, Context.MODE_PRIVATE)
+        sharedPreferencesPerson = this.requireActivity().getSharedPreferences(ACC_INFO,Context.MODE_PRIVATE)
+        UserName = sharedPreferencesPerson.getString(USERNAME,"").toString()
         binding.FoodNames.text = sharedPreferences.getString(FoodName, "")
         coroutine = Job() + Dispatchers.IO
         checkFavorite()
@@ -69,14 +74,13 @@ class ReciperAndHowTo : Fragment(), View.OnClickListener {
         val scope = CoroutineScope(coroutine)
         scope.launch(Dispatchers.IO){
             withContext(Dispatchers.Main){
-                val FavOrNot = DataBase.query(binding.FoodNames.text.toString())
+                val FavOrNot = DataBase.query(binding.FoodNames.text.toString(),UserName)
                 if(FavOrNot == true) {
                     binding.FavBtn.setImageResource(R.drawable.start_favorite)
                     binding.FavBtn.tag = "unfavorite"
                 }
             }
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -109,12 +113,16 @@ class ReciperAndHowTo : Fragment(), View.OnClickListener {
                 if(binding.FavBtn.tag.equals("favorite")) {
                     binding.FavBtn.setImageResource(R.drawable.start_favorite)
                     binding.FavBtn.tag = "unfavorite"
-                    val scope = CoroutineScope(coroutine)
-                    scope.launch(Dispatchers.IO){
-                        withContext(Dispatchers.Main){
-                            DataBase.write(binding.FoodNames.text.toString(),TimeAndDate.toString())
+
+                    if(UserName != ""){
+                        val scope = CoroutineScope(coroutine)
+                        scope.launch(Dispatchers.IO){
+                            withContext(Dispatchers.Main){
+                                DataBase.write(binding.FoodNames.text.toString(),TimeAndDate,UserName)
+                            }
                         }
                     }
+
                 }
                 else{
                     binding.FavBtn.setImageResource(R.drawable.start_unfavorite)
@@ -122,7 +130,7 @@ class ReciperAndHowTo : Fragment(), View.OnClickListener {
                     val scope = CoroutineScope(coroutine)
                     scope.launch(Dispatchers.IO){
                         withContext(Dispatchers.Main) {
-                            DataBase.delete(binding.FoodNames.text.toString())
+                            DataBase.delete(binding.FoodNames.text.toString(),UserName)
                         }
                     }
                 }

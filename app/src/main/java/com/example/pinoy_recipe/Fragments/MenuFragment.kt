@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.pinoy_recipe.Constants.ACC_INFO
 import com.example.pinoy_recipe.Constants.FoodCategory
 import com.example.pinoy_recipe.Constants.PICK_FOOD
+import com.example.pinoy_recipe.Constants.USERNAME
 import com.example.pinoy_recipe.R
 import com.example.pinoy_recipe.RealmDb.DataBase
 import com.example.pinoy_recipe.databinding.FragmentMenuBinding
@@ -19,6 +21,7 @@ class MenuFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentMenuBinding
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPreferencesPerson: SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,6 +38,7 @@ class MenuFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         sharedPreferences = this.requireActivity().getSharedPreferences(PICK_FOOD, Context.MODE_PRIVATE)
+        sharedPreferencesPerson = this.requireActivity().getSharedPreferences(ACC_INFO, Context.MODE_PRIVATE)
         when(p0!!.id){
             (R.id.MenuBackBtn)->{
                 findNavController().navigate(R.id.action_menuFragment_to_startFragment)
@@ -56,12 +60,13 @@ class MenuFragment : Fragment(), View.OnClickListener {
                 findNavController().navigate(R.id.action_menuFragment_to_foodPlace)
             }
             (R.id.FavoriteBtn)->{
-                val queryFavorites = DataBase.queryFav()
-
-                if (queryFavorites.isEmpty()) {
-                    Toast.makeText(requireContext(), "There is no favorites!", Toast.LENGTH_SHORT).show()
-                } else {
-                    findNavController().navigate(R.id.action_menuFragment_to_favoritesFragment)
+                if(sharedPreferencesPerson.getString(USERNAME,"").toString() != "") {
+                    val queryFavorites = DataBase.queryFav(sharedPreferencesPerson.getString(USERNAME, "").toString())
+                    if (queryFavorites.isEmpty()) {
+                        Toast.makeText(requireContext(), "There are no favorites!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        findNavController().navigate(R.id.action_menuFragment_to_favoritesFragment)
+                    }
                 }
             }
         }

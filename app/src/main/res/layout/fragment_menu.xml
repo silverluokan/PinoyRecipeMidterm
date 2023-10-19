@@ -88,7 +88,7 @@
         android:id="@+id/FavoriteBtn"
         android:layout_width="270dp"
         android:layout_height="80dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/menu_btns"
         android:fontFamily="@font/justanotherhand"
         android:text="Favorites"

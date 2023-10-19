@@ -12,15 +12,20 @@ class FoodInfo: RealmObject {
     @PrimaryKey
     var FavFoodName = ""
     var FavFoodDTimeStamp = ""
+    var FavAccountName = ""
 }
+
+
+
 object DataBase {
-    val configuration = RealmConfiguration.create(setOf(FoodInfo::class))
+    val configuration = RealmConfiguration.create(setOf(FoodInfo::class, AccountInfo::class))
     val realm = Realm.open(configuration)
 
-    suspend fun write(Fname:String, FTimeStamp:String) {
+    suspend fun write(Fname:String, FTimeStamp:String,FAName:String) {
         val FFName = FoodInfo().apply {
             FavFoodName = Fname
             FavFoodDTimeStamp = FTimeStamp
+            FavAccountName = FAName
         }
 
         realm.write {
@@ -29,34 +34,34 @@ object DataBase {
 
     }
 
-    fun query(Fname: String): Boolean {
+    fun query(Fname: String, FAName: String): Boolean {
         val all: RealmResults<FoodInfo> = realm.query<FoodInfo>().find()
         var isThere = false
         all.forEach(){Unit->
-            if(Unit.FavFoodName == Fname){
+            if(Unit.FavFoodName == Fname && Unit.FavAccountName == FAName){
                 isThere = true
             }
         }
         return isThere
-
     }
 
-    fun queryFav(): ArrayList<FavFoodData> {
+    fun queryFav(FAName: String): ArrayList<FavFoodData> {
         val all: RealmResults<FoodInfo> = realm.query<FoodInfo>().find()
         val FoodFav = mutableListOf<FavFoodData>()
         all.forEach { Unit ->
-            FoodFav.add(FavFoodData(Unit.FavFoodName, Unit.FavFoodDTimeStamp))
+            if(Unit.FavAccountName == FAName)
+                FoodFav.add(FavFoodData(Unit.FavFoodName, Unit.FavFoodDTimeStamp))
         }
         return FoodFav as ArrayList<FavFoodData>
 
     }
 
 
-    fun delete(Fname: String){
+    fun delete(Fname: String, FAName: String){
         realm.writeBlocking {
             val results: RealmResults<FoodInfo> = this.query<FoodInfo>().find()
             results.forEach { Unit ->
-                if(Unit.FavFoodName == Fname){
+                if(Unit.FavFoodName == Fname && Unit.FavAccountName == FAName){
                     delete(Unit)
                 }
             }

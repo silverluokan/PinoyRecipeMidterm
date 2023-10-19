@@ -1,5 +1,6 @@
 package com.example.pinoy_recipe.Fragments
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,12 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinoy_recipe.Adapaters.FavFoodAdapters
+import com.example.pinoy_recipe.Constants.ACC_INFO
+import com.example.pinoy_recipe.Constants.USERNAME
 import com.example.pinoy_recipe.R
 import com.example.pinoy_recipe.RealmDb.DataBase
 import com.example.pinoy_recipe.databinding.FragmentFavoritesBinding
 
 class FavoritesFragment : Fragment(), View.OnClickListener {
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPreferencesPerson: SharedPreferences
     private lateinit var binding: FragmentFavoritesBinding
     private lateinit var llm:LinearLayoutManager
     var index = 0
@@ -23,11 +27,15 @@ class FavoritesFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFavoritesBinding.inflate(inflater,container,false)
+        sharedPreferencesPerson = this.requireActivity().getSharedPreferences(ACC_INFO,Context.MODE_PRIVATE)
+        val UserName = sharedPreferencesPerson.getString(USERNAME,"")
+        if(UserName != ""){
+            val DataB = DataBase.queryFav(UserName.toString())
+            binding.recyclerView.adapter = FavFoodAdapters(DataB,requireContext())
+        }
         llm = LinearLayoutManager(this.context)
-        val DataB = DataBase.queryFav()
         llm.orientation = LinearLayoutManager.HORIZONTAL
         binding.recyclerView.layoutManager = llm
-        binding.recyclerView.adapter = FavFoodAdapters(DataB,requireContext())
         binding.NextButton.setOnClickListener(this)
         binding.PrevButton.setOnClickListener(this)
         binding.FPmenuBackBtn2.setOnClickListener(this)

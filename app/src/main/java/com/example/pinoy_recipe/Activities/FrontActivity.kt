@@ -4,25 +4,37 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.pinoy_recipe.Constants.EMAIL
-import com.example.pinoy_recipe.Constants.PASSWORD
+import com.example.pinoy_recipe.Constants.ACC_INFO
+import com.example.pinoy_recipe.Constants.USERNAME
 import com.example.pinoy_recipe.MainActivity
 import com.example.pinoy_recipe.R
+import com.example.pinoy_recipe.RealmDb.AccountDB
 import com.example.pinoy_recipe.databinding.ActivityFrontBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlin.coroutines.CoroutineContext
 
 
 class FrontActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPreferencesPerson: SharedPreferences
     private lateinit var binding: ActivityFrontBinding
+    private lateinit var coroutine: CoroutineContext
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFrontBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sharedPreferences  = getSharedPreferences("MY_USER", Context.MODE_PRIVATE)
+        sharedPreferencesPerson = getSharedPreferences(ACC_INFO, Context.MODE_PRIVATE)
+
+        coroutine = Job() + Dispatchers.IO
+
+//        val Array = AccountDB.query()
+//        for(i in 0..Array.size)
+//            Log.e("Arrays: ", Array[i])
+
         binding.SignInBtn.setOnClickListener(this)
         binding.SignUpBtn.setOnClickListener(this)
     }
@@ -30,21 +42,13 @@ class FrontActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when(p0!!.id){
             (R.id.SignInBtn)->{
-                val EmailText = sharedPreferences.getString(EMAIL, "")
-                val PasswordText = sharedPreferences.getString(PASSWORD,"")
-                if(EmailText != "" || PasswordText != ""){
-                    if(binding.EmailSingIn.text.toString() == EmailText && binding.PasswordSignIn.text.toString() == PasswordText){
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                    }
-                    else
-                    {
-                        Toast.makeText(applicationContext,"Email or Password is Incorrect!",Toast.LENGTH_SHORT).show()
-                    }
-                }
-                else
-                {
-                    Toast.makeText(applicationContext, "No Account Found!",Toast.LENGTH_SHORT).show()
+                val FindEmail = AccountDB.Emailquery(binding.EmailSingIn.text.toString(),binding.PasswordSignIn.text.toString())
+                if(FindEmail == true){
+                    val NameOfUser = AccountDB.Namequery(binding.EmailSingIn.text.toString())
+                    sharedPreferencesPerson.edit().putString(USERNAME,NameOfUser).apply()
+                    Log.e("Name:", NameOfUser)
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
                 }
             }
             (R.id.SignUpBtn)->{

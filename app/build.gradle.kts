@@ -4,7 +4,6 @@ plugins {
     id("io.realm.kotlin") version "1.11.1"
 }
 
-
 android {
     namespace = "com.example.pinoy_recipe"
     compileSdk = 34
